@@ -11,6 +11,7 @@ export class MapComponent {
 	public startAddress: string;
 	public endAddress: string;
 	public goalArrivalTime: string;
+	public earlyLate: number;
 	public initialized: boolean;
 	public map: any;
 	public directionsDisplay: any;
@@ -41,6 +42,7 @@ export class MapComponent {
 				}, function(response, status) {
 					if (status === google.maps.DirectionsStatus.OK) {
 						that.directionsDisplay.setDirections(response);
+						this.calculateEarlLate(response.routes[0].legs[0].duration.value);
 						resolve(response.routes[0].legs[0].duration.value);
 					} else {
 						window.alert('Directions request failed due to ' + status);
@@ -49,5 +51,19 @@ export class MapComponent {
 			}
 		}		
 		this.initialized = true;
+	}
+
+	calculateEarlyLate(arrival: number) {
+		var todaysGoal = (new Date()).setTime(this.goalArrivalTime);
+		var currentDate = new Date();
+		var targetDate;
+		var difference = todaysGoal - currentDate / 360000;
+		if(difference > 12) {
+			targetDate = todaysGoal - 
+		}
+
+
+
+		this.goalArrivalTime
 	}
 }
