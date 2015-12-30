@@ -1,30 +1,20 @@
 <div class="row">
 	<div class="col-md-3">
 		<h1>Directions</h1>
-		<form class="form-horizontal" (ngSubmit)="exportValues()">
+		<form (ngSubmit)="exportValues()">
 			<div class="form-group">	
-				<label class="col-sm-3 control-label" for="homeAddress">Home Address</label>
-				<div class="col-sm-9">
-					<input [(ngModel)]="model.homeAddress" class="form-control" type="text" name="homeAddress" />
-				</div>
+				<label class="control-label" for="homeAddress">Home Address</label>	
+				<input [(ngModel)]="model.homeAddress" class="form-control" type="text" name="homeAddress" />
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label" for="workAddress">Work Address</label>
-				<div class="col-sm-9">
-					<input [(ngModel)]="model.workAddress" class="form-control" type="text" name="workAddress" />
-				</div>
+				<label class="control-label" for="workAddress">Work Address</label>
+				<input [(ngModel)]="model.workAddress" class="form-control" type="text" name="workAddress" />
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label" for="workStartTime">What Time Does Work Start?</label>
-				<div class="col-sm-9">
-					<input [(ngModel)]="model.workStartTime"class="form-control" type="text" name="workStartTime" />
-				</div>
+				<label class="control-label" for="workStartTime">What Time Does Work Start?</label>
+				<input [(ngModel)]="model.workStartTime"class="form-control" type="text" name="workStartTime" />
 			</div>
-			<div class="form-group">
-				<div class="col-sm-9 col-sm-push-3">
-					<button type="submit" class="form-control">Will I Be Late?</button>
-				</div>
-			</div>
+			<button type="submit" class="form-control">Will I Be Late?</button>
 		</form>
 	</div>
 

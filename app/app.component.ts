@@ -5,7 +5,7 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 @Component({
     selector: 'my-app',
     template: `
-		<a [routerLink]="['Directions']">Directions</a>
+		<!--<a [routerLink]="['Directions']">Directions</a>-->
 	    <div class="container-fluid"><router-outlet></router-outlet></div>
     `,
 	directives: [ROUTER_DIRECTIVES]

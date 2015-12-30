@@ -1,0 +1,29 @@
+.results {
+	margin: 0;
+	text-align: center;
+	transition: all 1s;
+	padding: 0px;
+}
+
+h3.results {
+	padding-top: 25px;
+}
+h6.results {
+	padding-top: 10px;
+	padding-bottom: 25px;
+}
+
+.early {
+	background: #090;
+	color: #fff;
+}
+
+.on.time {
+	background: #66f;
+	color: #fff;
+}
+
+.late {
+	background: #f44;
+	color: #fff;
+}
