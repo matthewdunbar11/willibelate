@@ -1,5 +1,6 @@
 import {Component} from 'angular2/core';
-import {DirectionsComponent} from './directions/directions.component'
+import {DirectionsComponent} from './directions/directions.component';
+import {RegisterComponent} from './user/register/register.component';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
 @Component({
@@ -12,5 +13,6 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 })
 @RouteConfig([
 	{ path: '/directions', name: 'Directions', component: DirectionsComponent },
+	{ path: '/register', name: 'Register', component: RegisterComponent },
 ])
 export class AppComponent { }
