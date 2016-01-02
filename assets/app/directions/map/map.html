@@ -1,0 +1,14 @@
+<h3 [ngClass]="earlyLateString" *ngIf="earlyLateString" class="results">
+	You will arrive <span *ngIf="earlyLateString != 'ON TIME'">{{millisecondsEarly | millisecondsToSeconds | secondsToMinutes | abs}} minutes</span> {{earlyLateString}}
+</h3>
+<h6 [ngClass]="earlyLateString" *ngIf="earlyLateString" class="results">
+Travel time: {{travelTime | async | secondsToMinutes}} minutes
+</h6>	
+
+<!--<h3 *ngIf="millisecondsEarly >= 360000" class="early results">You will arrive EARLY</h3>
+<h3 *ngIf="millisecondsEarly >= 0 && millisecondsEarly < 360000" class="ontime results">You will arrive ON TIME</h3>
+<h3 *ngIf="millisecondsEarly < 0" class="late results">You will arrive LATE</h3>
+
+<!--{{travelTime | async | secondsToMinutes}} minutes, 
+	You will be: {{millisecondsEarly | millisecondsToSeconds | secondsToMinutes | abs}} minutes -->
+<div id="map" style="height: 700px;"></div>
