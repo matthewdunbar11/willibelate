@@ -1,11 +1,10 @@
 System.register(['angular2/core', 'angular2/common', '../../time/secondsToMinutes.pipe', '../../time/millisecondsToSeconds.pipe', '../../math/abs.pipe'], function(exports_1) {
+    "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-        switch (arguments.length) {
-            case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-            case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-            case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-        }
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
@@ -31,14 +30,14 @@ System.register(['angular2/core', 'angular2/common', '../../time/secondsToMinute
             }],
         execute: function() {
             /// <reference path="./google.maps.d.ts" />
+            /// <reference path="./datejs.d.ts" />
             MapComponent = (function () {
                 function MapComponent() {
                     this.isNaN = isNaN;
                     this.initialized = false;
                     this.directionsService = new google.maps.DirectionsService;
                     this.directionsDisplay = new google.maps.DirectionsRenderer;
-                    var center;
-                    center = [38.9684926, -97.3197131];
+                    var center = new google.maps.LatLng(38.9684926, -97.3197131);
                     var options = {
                         center: center,
                         zoom: 5
@@ -82,14 +81,14 @@ System.register(['angular2/core', 'angular2/common', '../../time/secondsToMinute
                     this.initialized = true;
                 };
                 MapComponent.prototype.calculateEarlyLate = function (arrival, that) {
-                    var todaysGoal = that.parseTime(that.goalArrivalTime);
-                    var yesterdaysGoal = new Date(todaysGoal.getTime() - 86400000);
-                    var tomorrowsGoal = new Date(todaysGoal.getTime() + 86400000);
-                    var arrivalTime = new Date(new Date().getTime() + arrival * 1000);
+                    var todaysGoal = Date.parse(that.goalArrivalTime);
+                    var yesterdaysGoal = todaysGoal.clone().add(-1).days();
+                    var tomorrowsGoal = todaysGoal.clone().add(1).days();
+                    var arrivalTime = Date.parse('n').add(arrival).seconds();
                     var twelveHours = 12 * 60 * 60 * 1000;
                     var millisecondsEarly;
                     // This compares each goal arrival time (for yesterday, today, and tomorrow)
-                    // to find which one is less than twelve hours from right now (i.e., which 
+                    // to find which one is less than twelve hours from right now (i.e., which
                     // one is closest to right now)
                     if (Math.abs(arrivalTime.getTime() - tomorrowsGoal.getTime()) < twelveHours) {
                         millisecondsEarly = tomorrowsGoal.getTime() - arrivalTime.getTime();
@@ -107,7 +106,16 @@ System.register(['angular2/core', 'angular2/common', '../../time/secondsToMinute
                         return null;
                     var d = new Date();
                     var time = timeString.match(/(\d+)(:(\d\d))?\s*(p?)/i);
-                    d.setHours(parseInt(time[1], 10) + ((parseInt(time[1], 10) < 12 && time[4]) ? 12 : 0));
+                    console.log(time);
+                    if (time.input.toLowerCase().indexOf('pm') >= 0) {
+                        time[4] = 'pm';
+                        d.setHours(parseInt(time[1]) + 12);
+                    }
+                    else {
+                        time[4] = 'am';
+                        d.setHours(parseInt(time[1]));
+                    }
+                    //d.setHours(parseInt(time[1], 10) - ((parseInt(time[1], 10) < 12 && time[4] == 'pm') ? 12 : 0));
                     d.setMinutes(parseInt(time[3], 10) || 0);
                     d.setSeconds(0, 0);
                     return d;
@@ -123,7 +131,7 @@ System.register(['angular2/core', 'angular2/common', '../../time/secondsToMinute
                     __metadata('design:paramtypes', [])
                 ], MapComponent);
                 return MapComponent;
-            })();
+            }());
             exports_1("MapComponent", MapComponent);
         }
     }

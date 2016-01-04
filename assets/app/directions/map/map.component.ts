@@ -4,6 +4,7 @@ import {SecondsToMinutesPipe} from '../../time/secondsToMinutes.pipe'
 import {MillisecondsToSecondsPipe} from '../../time/millisecondsToSeconds.pipe'
 import {AbsPipe} from '../../math/abs.pipe'
 /// <reference path="./google.maps.d.ts" />
+/// <reference path="./datejs.d.ts" />
 
 @Component({
 	selector: 'map',
@@ -29,14 +30,13 @@ export class MapComponent {
 		this.initialized = false;
 		this.directionsService = new google.maps.DirectionsService;
 		this.directionsDisplay = new google.maps.DirectionsRenderer;
-		var center: LatLng;
-		center = [38.9684926, -97.3197131];
-		var options: MapOptions = {
+		var center = new google.maps.LatLng(38.9684926, -97.3197131);
+		var options: google.maps.MapOptions = {
 			center: center,
 			zoom: 5
 		};
 
-		this.map = new google.maps.Map(document.getElementById('map'), options);	
+		this.map = new google.maps.Map(document.getElementById('map'), options);
 
 		this.directionsDisplay.setMap(this.map);
 
@@ -66,7 +66,7 @@ export class MapComponent {
 			that.travelTime.then((travelTime: number) => {
 				that.millisecondsEarly = that.calculateEarlyLate(travelTime, that);
 				if(that.millisecondsEarly > 360000) {
-					that.earlyLateString = 'EARLY';	
+					that.earlyLateString = 'EARLY';
 				}
 				else if(that.millisecondsEarly > 0 && that.millisecondsEarly <= 360000) {
 					that.earlyLateString = 'ON TIME';
@@ -74,23 +74,23 @@ export class MapComponent {
 				else if(that.millisecondsEarly < 0) {
 					that.earlyLateString = 'LATE';
 				}
-				
+
 			});
 
-		}		
+		}
 		this.initialized = true;
 	}
 
 	calculateEarlyLate(arrival: number, that: any) {
-		var todaysGoal: Date = that.parseTime(that.goalArrivalTime);
-		var yesterdaysGoal: Date = new Date(todaysGoal.getTime() - 86400000);
-		var tomorrowsGoal: Date = new Date(todaysGoal.getTime() + 86400000);
-		var arrivalTime: Date = new Date(new Date().getTime() + arrival * 1000);
+		var todaysGoal: Date = Date.parse(that.goalArrivalTime);
+		var yesterdaysGoal: Date = todaysGoal.clone().add(-1).days();
+		var tomorrowsGoal: Date = todaysGoal.clone().add(1).days();
+		var arrivalTime: Date = Date.parse('n').add(arrival).seconds();
 		var twelveHours: number = 12 * 60 * 60 * 1000;
 		var millisecondsEarly: number;
 
 		// This compares each goal arrival time (for yesterday, today, and tomorrow)
-		// to find which one is less than twelve hours from right now (i.e., which 
+		// to find which one is less than twelve hours from right now (i.e., which
 		// one is closest to right now)
 		if (Math.abs(arrivalTime.getTime() - tomorrowsGoal.getTime()) < twelveHours) {
 			millisecondsEarly = tomorrowsGoal.getTime() - arrivalTime.getTime();
@@ -109,11 +109,22 @@ export class MapComponent {
 		if (timeString == '') return null;
 		var d = new Date();
 		var time = timeString.match(/(\d+)(:(\d\d))?\s*(p?)/i);
-		d.setHours(parseInt(time[1], 10) + ((parseInt(time[1], 10) < 12 && time[4]) ? 12 : 0));
+		console.log(time);
+		if(time.input.toLowerCase().indexOf('pm') >= 0) {
+				time[4] = 'pm';
+				d.setHours(parseInt(time[1]) + 12);
+		}
+		else {
+			time[4] = 'am';
+			d.setHours(parseInt(time[1]));
+		}
+
+
+		//d.setHours(parseInt(time[1], 10) - ((parseInt(time[1], 10) < 12 && time[4] == 'pm') ? 12 : 0));
 		d.setMinutes(parseInt(time[3], 10) || 0);
 		d.setSeconds(0, 0);
 		return d;
-	}	
+	}
 
 	isNaN = isNaN;
 }
