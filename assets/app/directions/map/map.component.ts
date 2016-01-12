@@ -29,9 +29,8 @@ export class MapComponent {
 		this.initialized = false;
 		this.directionsService = new google.maps.DirectionsService;
 		this.directionsDisplay = new google.maps.DirectionsRenderer;
-		var center: LatLng;
-		center = [38.9684926, -97.3197131];
-		var options: MapOptions = {
+		var center: google.maps.LatLng(38.9684926, -97.3197131);
+		var options: google.maps.MapOptions = {
 			center: center,
 			zoom: 5
 		};

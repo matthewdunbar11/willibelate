@@ -35,7 +35,7 @@
   "scripts": {
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "start": "concurrent \"npm run tsc:w\" \"node app.js\" ",
+    "start": "node app.js",
     "debug": "node debug app.js"
   },
   "main": "app.js",
